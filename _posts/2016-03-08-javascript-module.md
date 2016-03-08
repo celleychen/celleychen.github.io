@@ -1,4 +1,4 @@
- ---
+---
 layout: post
 title: 模块化JavaScript(转)
 category: 技术
