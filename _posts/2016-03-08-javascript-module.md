@@ -158,20 +158,20 @@ CMD 是 SeaJS 在推广过程中对模块定义的规范化产出。
 ```javascript
 // CMD
 define(function(require, exports, module) {
-　　var a = require('./a')
-　　a.doSomething()
-　　// 此处略去 100 行
-　　var b = require('./b') // 依赖可以就近书写
-　　b.doSomething()
-　　// ... 
+    var a = require('./a')
+    a.doSomething()
+    // 此处略去 100 行
+    var b = require('./b') // 依赖可以就近书写
+    b.doSomething()
+    // ... 
 })
 
 // AMD 默认推荐的是
 define(['./a', './b'], function(a, b) { // 依赖必须一开始就写好
-　　a.doSomething()
-　　// 此处略去 100 行
-　　b.doSomething()
-　　...
+    a.doSomething()
+    // 此处略去 100 行
+    b.doSomething()
+    ...
 }) 
 ```
 
