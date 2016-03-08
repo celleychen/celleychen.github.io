@@ -24,6 +24,7 @@ comments: true
 SeaJS我们领教过了，但是对于它的模块化写法，到底是咋回事儿？我们先看看module写法的演变。直接去看 JavaScript中模块“写法” ，使用 统一的风格来写模块，非nodeJS打头阵不可， 以下是node中是写模块的一个示例。
 
 1> math.js
+
 ```javascript
 exports.add = function() {
     var sum = 0, i = 0, args = arguments, l = args.length;
@@ -35,18 +36,22 @@ exports.add = function() {
 ```
 
 2> increment.js
+
 ```javascript
 var add = require('math').add;
 exports.increment = function(val) {
     return add(val, 1);
 };
 ```
+
 3> main.js，该文件为入口文件
+
 ```javascript
 var inc = require('increment').increment;
 var a = 1;
 inc(a); // 2
 ```
+
 从以上代码示例可以看到——
 
 1> node要求一个js文件对应一个模块。可以把该文件中的代码想象成是包在一个匿名函数中，所有代码都在匿名函数中，其它模块不可访问除exports外的私有变量
@@ -71,7 +76,8 @@ CommonJS module基本要求 如下——
 
 Modules/Wrappings 的出现使得浏览器中实现它变得可能，包裹的函数作为回调。即使用script tag作为模块加载器，script完全下载后去回调，回调中进行模块定义。
 接着，也就产生了AMD( 全称为异步模块定义 )规范了（读 AMD：浏览器中的模块规范 ）。 从名称上看便知它是适合script tag的。也可以说AMD是专门为浏览器中JavaScript环境设计的规范。它吸取了CommonJS的一些优点，但又不照搬它的格式。开始AMD作为CommonJS的 transport format   存在，因无法与CommonJS开发者达成一致而独立出来。
-AMD开创性的提出了自己的模块风格。但后来又做了妥协，兼容了 CommonJS  Modules/Wrappings  。
+AMD开创性的提出了自己的模块风格。但后来又做了妥协，兼容了 CommonJS  Modules/Wrappings。
+
 ```javascript
 define(function(require, exports, module) {
     var base = require('base');
@@ -80,6 +86,7 @@ define(function(require, exports, module) {
     } 
 });
 ```
+
 不考虑多了一层函数外，格式和Node.js是一样的。使用require获取依赖模块，使用exports导出API。
 除了define外，AMD还保留一个关键字require。 require   作为规范保留的全局标识符，可以实现为 module loader。
 目前，实现AMD的库有 RequireJS  、 curl  、 Dojo  、 bdLoad 、 JSLocalnet  、 Nodules  等。
@@ -94,17 +101,21 @@ define(id?, deps?, factory);
 RequireJS中factory的参数有两种情况。
 
 a、和deps（数组）元素一一对应。即deps有几个，factory的实参就有几个。(官方推荐的模块定义方法)
+
 ```javascript
 define(['a', 'b'], function(a, b){
     // todo
 });
 ```
+
 b、固定为require,exports, module（modules/wrappings格式）。
+
 ```javascript
 define(function(require, exports, module){
     // todo
 });
 ```
+
 这种方式是RequireJS后期向  Modules/Wrappings  的妥协，即兼容了它。而SeaJS的define仅支持RequireJS的第二种写法：Modules/Wrappings。
 
 注意 ：SeaJS遵循的是  Modules/Wrappings  和  Modules/1.1.1 。这两个规范中都没有提到define关键字，Modules/Wrapping中要求定义模块使用module.declare而非define。而恰恰只有AMD规范中有define的定义。即虽然SeaJS不是AMD的实现，但它却采用了让人极容易误解的标识符define。
@@ -143,6 +154,7 @@ CMD 是 SeaJS 在推广过程中对模块定义的规范化产出。
 
 1. 对于依赖的模块，AMD 是提前执行，CMD 是延迟执行。不过 RequireJS 从 2.0 开始，也改成可以延迟执行（根据写法不同，处理方式不同）。CMD 推崇 as lazy as possible.
 2. CMD 推崇依赖就近，AMD 推崇依赖前置。看代码：
+
 ```javascript
 // CMD
 define(function(require, exports, module) {
@@ -162,6 +174,7 @@ define(['./a', './b'], function(a, b) { // 依赖必须一开始就写好
 　　...
 }) 
 ```
+
 虽然 AMD 也支持 CMD 的写法，同时还支持将 require 作为依赖项传递，但 RequireJS 的作者默认是最喜欢上面的写法，也是官方文档里默认的模块定义写法。
 3. AMD 的 API 默认是一个当多个用，CMD 的 API 严格区分，推崇职责单一。比如 AMD 里，require 分全局 require 和局部 require，都叫 require。CMD 里，没有全局 require，而是根据模块系统的完备性，提供 seajs.use 来实现模块系统的加载启动。CMD 里，每个 API 都简单纯粹。
 4. 还有一些细节差异，具体看这个规范的定义就好，就不多说了。
@@ -182,4 +195,4 @@ RequireJS 遵循的是 AMD（异步模块定义）规范，SeaJS 遵循的是 CM
     需要记住—— AMD 是 RequireJS 在推广过程中对模块定义的规范化产出。 CMD 是 SeaJS 在推广过程中对模块定义的规范化产出。
 
 #### 六、引深
-     本文仅仅讲述了前端Javascript的模块化开发思想，但是对于其他的HTML和CSS，我们是否也可以采用模块化话的开发思想来引导呢？答案是肯定的。尤其在前端多人合作开发的情况下，这种模块化的开发模式会让我们爱不释手。这里我只细读过这样一篇文章， 前端开发：模块化 — 高效重构 。该论题还在研究中，敬请期待... 
+    本文仅仅讲述了前端Javascript的模块化开发思想，但是对于其他的HTML和CSS，我们是否也可以采用模块化话的开发思想来引导呢？答案是肯定的。尤其在前端多人合作开发的情况下，这种模块化的开发模式会让我们爱不释手。这里我只细读过这样一篇文章， 前端开发：模块化 — 高效重构 。该论题还在研究中，敬请期待... 
